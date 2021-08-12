@@ -23,14 +23,41 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 HWINEVENTHOOK hHook;
 
-std::string getAppNameFromWindowHandle(HWND hwnd) {
-    std::string appName;                   
-    TCHAR Buffer[MAX_PATH];
+class ProcessDetail {
+private:
+    std::string processPath;
+    std::string windowTitle;
+public:
+    ProcessDetail(std::string path = "", std::string title = "") {
+        processPath = path;
+        windowTitle = title;
+    }
+};
 
-    GetWindowText(hwnd, Buffer, sizeof(Buffer));
-    appName = *CW2A(Buffer);
+ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
+    std::string processPath = "", windowTitle = "";
+    DWORD dwPID;
+    GetWindowThreadProcessId(hwnd, &dwPID);
 
-    return appName;
+    HANDLE handle = OpenProcess(
+        PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+        FALSE,
+        dwPID
+    );
+
+    if (handle) {
+        TCHAR Buffer[MAX_PATH];
+        if (GetModuleFileNameEx(handle, 0, Buffer, MAX_PATH)) {
+            processPath = CW2A(Buffer);
+
+            GetWindowText(hwnd, Buffer, sizeof(Buffer));
+            windowTitle = CW2A(Buffer);
+            CloseHandle(handle);
+        }
+    }
+
+    ProcessDetail pd(processPath, windowTitle);
+    return pd;
 }
 
 void CALLBACK ScreenTimeEventHandler(
@@ -45,7 +72,7 @@ void CALLBACK ScreenTimeEventHandler(
     // process foreground and log data
     if (event == EVENT_SYSTEM_FOREGROUND) {
         if (IsWindowVisible(hwnd)) {
-            std::string processName = getAppNameFromWindowHandle(hwnd);
+            ProcessDetail pd = getProcessNameFromWindowHandle(hwnd);
             OutputDebugString(L"here>>");
         }
     }
