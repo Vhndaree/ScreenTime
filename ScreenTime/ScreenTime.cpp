@@ -3,10 +3,11 @@
 
 #include "framework.h"
 #include "ScreenTime.h"
-#include "psapi.h"
+#include "Psapi.h"
+#include "Shlwapi.h"
+#include "atlstr.h"
 #include <iostream>
 #include <string>
-#include <sstream>
 
 #define MAX_LOADSTRING 100
 
@@ -22,6 +23,16 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 HWINEVENTHOOK hHook;
 
+std::string getAppNameFromWindowHandle(HWND hwnd) {
+    std::string appName;                   
+    TCHAR Buffer[MAX_PATH];
+
+    GetWindowText(hwnd, Buffer, sizeof(Buffer));
+    appName = *CW2A(Buffer);
+
+    return appName;
+}
+
 void CALLBACK ScreenTimeEventHandler(
     HWINEVENTHOOK hWinEventHook,
     DWORD event,
@@ -34,29 +45,8 @@ void CALLBACK ScreenTimeEventHandler(
     // process foreground and log data
     if (event == EVENT_SYSTEM_FOREGROUND) {
         if (IsWindowVisible(hwnd)) {
-            DWORD dwPID;
-            GetWindowThreadProcessId(hwnd, &dwPID);
-            TCHAR szProcessName[MAX_PATH] = TEXT("<unknown>");
-
-            HANDLE handle = OpenProcess(
-                PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-                FALSE,
-                dwPID
-            );
-
-            if (handle != NULL) {
-                HMODULE hMod;
-                DWORD cbNeeded;
-
-                if (EnumProcessModules(handle, &hMod, sizeof(hMod), &cbNeeded)) {
-                    GetModuleBaseName(handle, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
-                }
-
-                std::string mystr;
-                mystr = *szProcessName;
-
-                CloseHandle(handle);
-            }
+            std::string processName = getAppNameFromWindowHandle(hwnd);
+            OutputDebugString(L"here>>");
         }
     }
 }
