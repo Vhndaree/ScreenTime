@@ -4,10 +4,11 @@
 #include "framework.h"
 #include "ScreenTime.h"
 #include "Psapi.h"
-#include "Shlwapi.h"
 #include "atlstr.h"
-#include <iostream>
-#include <string>
+#include "Action.cpp"
+#include "Service.cpp"
+#include "EventHook.cpp"
+
 
 #define MAX_LOADSTRING 100
 
@@ -22,61 +23,6 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 HWINEVENTHOOK hHook;
-
-class ProcessDetail {
-private:
-    std::string processPath;
-    std::string windowTitle;
-public:
-    ProcessDetail(std::string path = "", std::string title = "") {
-        processPath = path;
-        windowTitle = title;
-    }
-};
-
-ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
-    std::string processPath = "", windowTitle = "";
-    DWORD dwPID;
-    GetWindowThreadProcessId(hwnd, &dwPID);
-
-    HANDLE handle = OpenProcess(
-        PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-        FALSE,
-        dwPID
-    );
-
-    if (handle) {
-        TCHAR Buffer[MAX_PATH];
-        if (GetModuleFileNameEx(handle, 0, Buffer, MAX_PATH)) {
-            processPath = CW2A(Buffer);
-
-            GetWindowText(hwnd, Buffer, sizeof(Buffer));
-            windowTitle = CW2A(Buffer);
-            CloseHandle(handle);
-        }
-    }
-
-    ProcessDetail pd(processPath, windowTitle);
-    return pd;
-}
-
-void CALLBACK ScreenTimeEventHandler(
-    HWINEVENTHOOK hWinEventHook,
-    DWORD event,
-    HWND hwnd,
-    LONG idObject,
-    LONG idChild,
-    DWORD eventThreadId,
-    DWORD dwmsEventTime
-) {
-    // process foreground and log data
-    if (event == EVENT_SYSTEM_FOREGROUND) {
-        if (IsWindowVisible(hwnd)) {
-            ProcessDetail pd = getProcessNameFromWindowHandle(hwnd);
-            OutputDebugString(L"here>>");
-        }
-    }
-}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
