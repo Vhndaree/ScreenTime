@@ -1,10 +1,11 @@
 #include <string>
 #include "model.cpp"
 #include "util.cpp"
+#include "service.cpp"
 
 ProcessDetail PROCESS_DETAIL;
 
-ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
+void handleProcessDetail(HWND hwnd) {
     std::string processPath = "", processName ="", windowTitle = "", startDateTime = "";
     DWORD dwPID;
     GetWindowThreadProcessId(hwnd, &dwPID);
@@ -18,6 +19,7 @@ ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
     if (handle) {
         TCHAR Buffer[MAX_PATH];
         if (GetModuleFileNameEx(handle, 0, Buffer, MAX_PATH)) {
+
             startDateTime = Now();
             processPath = CW2A(Buffer);
 
@@ -28,9 +30,14 @@ ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
             GetWindowText(hwnd, Buffer, sizeof(Buffer));
             windowTitle = CW2A(Buffer);
             CloseHandle(handle);
+
+            if (PROCESS_DETAIL.Valid() && PROCESS_DETAIL.GetEndDateTime() == "") {
+                PROCESS_DETAIL.SetEndDateTime(Now());
+                Save(PROCESS_DETAIL);
+            }
         }
     }
 
     ProcessDetail pd(processName, processPath, windowTitle, startDateTime);
-    return pd;
+    PROCESS_DETAIL = pd;
 }

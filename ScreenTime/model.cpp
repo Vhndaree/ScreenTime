@@ -52,6 +52,6 @@ public:
     }
 
     boolean Valid() {
-        return windowTitle != "" && processPath != "" && processName != "";
+        return windowTitle != "" && processPath != "" && processName != "" && startDateTime !="";
     }
 };
