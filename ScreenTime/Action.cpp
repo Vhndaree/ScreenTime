@@ -1,32 +1,11 @@
 #include <string>
+#include "model.cpp"
+#include "util.cpp"
 
-class ProcessDetail {
-private:
-    std::string processName;
-    std::string processPath;
-    std::string windowTitle;
-public:
-    ProcessDetail(std::string name = "", std::string path = "", std::string title = "") {
-        processName = name;
-        processPath = path;
-        windowTitle = title;
-    }
-    std::string GetWindowTitle() {
-        return windowTitle;
-    }
-    std::string GetProcessPath() {
-        return processPath;
-    }
-    std::string GetProcessName() {
-        return processName;
-    }
-    boolean Valid() {
-        return windowTitle != "" && processPath != "" && processName != "";
-    }
-};
+ProcessDetail PROCESS_DETAIL;
 
 ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
-    std::string processPath = "", processName ="", windowTitle = "";
+    std::string processPath = "", processName ="", windowTitle = "", startDateTime = "";
     DWORD dwPID;
     GetWindowThreadProcessId(hwnd, &dwPID);
 
@@ -39,6 +18,7 @@ ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
     if (handle) {
         TCHAR Buffer[MAX_PATH];
         if (GetModuleFileNameEx(handle, 0, Buffer, MAX_PATH)) {
+            startDateTime = Now();
             processPath = CW2A(Buffer);
 
             GetModuleBaseName(handle, 0, Buffer, MAX_PATH);
@@ -51,6 +31,6 @@ ProcessDetail getProcessNameFromWindowHandle(HWND hwnd) {
         }
     }
 
-    ProcessDetail pd(processName, processPath, windowTitle);
+    ProcessDetail pd(processName, processPath, windowTitle, startDateTime);
     return pd;
 }

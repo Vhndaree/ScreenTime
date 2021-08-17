@@ -5,9 +5,7 @@
 #include "ScreenTime.h"
 #include "Psapi.h"
 #include "atlstr.h"
-#include "Action.cpp"
-#include "Service.cpp"
-#include "EventHook.cpp"
+#include "event.cpp"
 
 
 #define MAX_LOADSTRING 100

@@ -1,3 +1,6 @@
+#include "action.cpp"
+#include "service.cpp"
+
 void CALLBACK ScreenTimeEventHandler(
     HWINEVENTHOOK hWinEventHook,
     DWORD event,

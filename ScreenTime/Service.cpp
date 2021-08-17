@@ -2,7 +2,6 @@
 #include <sstream>
 #include <mysql.h>
 
-
 using namespace std;
 
 MYSQL* connection;
@@ -10,24 +9,25 @@ MYSQL* connection;
 void Save(ProcessDetail pd) {
 	connection = mysql_init(0);
 	if (connection) {
-		OutputDebugString(L"connection created");
+		std::cout << "connection established";
 	}
 	else
-		OutputDebugString(L"connection failed 1");
+		std::cout << "connection failed";
+
 	connection = mysql_real_connect(connection, "localhost", "root", "password", "screentime", 3306, NULL, 0);
+
 	if (connection) {
-		OutputDebugString(L"connection database");
 		stringstream ss;
-		ss << "INSERT INTO screentime(windowTitle, processName, processPath)"
-			<< "VALUES ('"+ pd.GetWindowTitle() + "', '"+ pd.GetProcessName() +"', '" + pd.GetProcessPath() + "')";
+		ss << "INSERT INTO screentime(window_title, process_name, process_path, start_date_time, end_date_time)"
+			<< "VALUES ('"+ pd.GetWindowTitle() + "', '"+ pd.GetProcessName() +"', '" + pd.GetProcessPath() + "', '" + pd.GetStartDateTime() + "', '" + pd.GetStartDateTime() + "')";
 
 		if (mysql_query(connection, ss.str().c_str())){
-			OutputDebugString(L"insertion failed");
+			std::cout << "query failed";
 		} else
-			OutputDebugString(L"insertion complete");
+			std::cout << "query succeed";
+
 		mysql_close(connection);	
 	}
 	else
-		OutputDebugString(L"connection failed 2");
-
+		std::cout << "connection failed";
 }
