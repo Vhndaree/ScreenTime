@@ -10,7 +10,7 @@ void CALLBACK ScreenTimeEventHandler(
     if (event == EVENT_SYSTEM_FOREGROUND) {
         if (IsWindowVisible(hwnd)) { 
             ProcessDetail pd = getProcessNameFromWindowHandle(hwnd);
-            DBConnection();
+            Save(pd);
         }
     }
 }
