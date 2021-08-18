@@ -16,7 +16,7 @@ void Save(ProcessDetail pd) {
 		exit(0);
 	}
 
-	connection = mysql_real_connect(connection, "localhost", "root", "password", "screentime", 3306, NULL, 0);
+	connection = mysql_real_connect(connection, "your_server", "user_name", "password", "screentimedb", 3306, NULL, 0);
 
 	if (connection) {
 		stringstream ss;
