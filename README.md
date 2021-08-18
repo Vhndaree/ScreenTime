@@ -1,0 +1,47 @@
+# ScreenTime
+Desktop application for monitoring screen activity.
+
+
+## Table of Contents
+- [Pre-requisites](#prerequisites)
+- [Running it Locally](#running-it-locally)
+- [Project Status](#project-status)
+- [Youe First PR](#your-first-pr)
+
+### Pre-requisites
+If you want to setup and run the application in your host os.
+- Visual Studio 2019 and above
+- MYSQL
+
+### Running it Locally
+1. Install MYSQL connector and Server 
+1. Create a database and table 
+```
+    CREATE DATABASE screentimedb;
+```
+2. Create a table of name `screentime`
+```
+    CREATE TABLE screentime ( 
+        id INT NOT NULL AUTO_INCREMENT,
+        process_name VARCHAR(255) NULL DEFAULT NULL,
+        process_path VARCHAR(255) NOT NULL,
+        window_title VARCHAR(255) NOT NULL,
+        start_date_time VARCHAR(255) NOT NULL,
+        end_date_time VARCHAR(255) NULL DEFAULT NULL,
+        PRIMARY KEY (id)
+    ) 
+    ENGINE = InnoDB;
+```
+3. Build executable and run `.exe`
+4. ✨ Now the magic will begin ✨
+
+### Project Status
+[x] Monitors screen time; when an aplication is opened & closed and, gains and looses focus.
+[x] Supported on windows 10 and above. 
+[ ] Add support for other OS.
+[ ] Github action for CI/CD.
+[ ] Generate screentime report for users.
+[ ] ISSUE and PR template.
+
+### Your First PR
+Contribution is always welcome either PR or an ISSUE.
