@@ -36,11 +36,10 @@ If you want to setup and run the application in your host os.
 4. ✨ Now the magic will begin ✨
 
 ### Project Status
-[x] Monitors screen time; when an application is opened & closed and gains and loses focus. 
-[x] Supported on Windows 10 and above. 
-[ ] Add support for other OS. 
-[ ] Github action for CI/CD. 
-[ ] Generate screentime report for users. 
+[x] Monitors screen time - when and app is opened & closed and gains and loses focus.
+[x] Supported on Windows 10 and above.
+[ ] Github action for CI/CD.
+[ ] Generate screentime report for users.
 [ ] ISSUE and a PR template.
 
 ### Your First PR
