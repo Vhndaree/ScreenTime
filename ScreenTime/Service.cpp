@@ -22,7 +22,7 @@ void Save(ProcessDetail pd) {
 		stringstream ss;
 		ss << "INSERT INTO screentime(window_title, process_name, process_path, start_date_time, end_date_time)"
 			<< "VALUES ('"+ pd.GetWindowTitle() + "', '"+ pd.GetProcessName() +"', '" + pd.GetProcessPath() + "', '" + pd.GetStartDateTime() + "', '" + pd.GetEndDateTime() + "')";
-		std::string s = ss.str();
+
 		if (mysql_query(connection, ss.str().c_str())){
 			std::cout << "query failed";
 		} else
