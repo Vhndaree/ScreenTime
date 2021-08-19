@@ -11,10 +11,7 @@ void CALLBACK ScreenTimeEventHandler(
 ) {
     if (event == EVENT_SYSTEM_FOREGROUND) {
         if (IsWindowVisible(hwnd)) { 
-            ProcessDetail pd = getProcessDetail(hwnd);
-            if (pd.Valid()) {
-                Save(pd);
-            }
+            handleProcessDetail(hwnd);
         }
     }
 }

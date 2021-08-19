@@ -5,7 +5,7 @@
 
 ProcessDetail PROCESS_DETAIL;
 
-ProcessDetail getProcessDetail(HWND hwnd) {
+void handleProcessDetail(HWND hwnd) {
     std::string processPath = "", processName = "", windowTitle = "";
     std::time_t startDateTime;
     DWORD dwPID;
@@ -33,13 +33,11 @@ ProcessDetail getProcessDetail(HWND hwnd) {
 
             if (PROCESS_DETAIL.isInitiated() && PROCESS_DETAIL.GetEndDateTime() == 0) {
                 PROCESS_DETAIL.SetEndDateTime(Now());
-                return PROCESS_DETAIL;
+                Save(pd);
             }
         }
     }
 
     ProcessDetail pd(processName, processPath, windowTitle, startDateTime);
     PROCESS_DETAIL = pd;
-
-    return pd;
 }
