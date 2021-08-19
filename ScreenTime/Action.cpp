@@ -33,7 +33,7 @@ void handleProcessDetail(HWND hwnd) {
 
             if (PROCESS_DETAIL.isInitiated() && PROCESS_DETAIL.GetEndDateTime() == 0) {
                 PROCESS_DETAIL.SetEndDateTime(Now());
-                Save(pd);
+                Save(PROCESS_DETAIL);
             }
         }
     }
