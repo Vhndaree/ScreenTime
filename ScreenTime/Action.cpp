@@ -5,8 +5,9 @@
 
 ProcessDetail PROCESS_DETAIL;
 
-void handleProcessDetail(HWND hwnd) {
-    std::string processPath = "", processName ="", windowTitle = "", startDateTime = "";
+ProcessDetail getProcessDetail(HWND hwnd) {
+    std::string processPath = "", processName = "", windowTitle = "";
+    std::time_t startDateTime;
     DWORD dwPID;
     GetWindowThreadProcessId(hwnd, &dwPID);
 
@@ -19,7 +20,6 @@ void handleProcessDetail(HWND hwnd) {
     if (handle) {
         TCHAR Buffer[MAX_PATH];
         if (GetModuleFileNameEx(handle, 0, Buffer, MAX_PATH)) {
-
             startDateTime = Now();
             processPath = CW2A(Buffer);
 
@@ -31,13 +31,15 @@ void handleProcessDetail(HWND hwnd) {
             windowTitle = CW2A(Buffer);
             CloseHandle(handle);
 
-            if (PROCESS_DETAIL.Valid() && PROCESS_DETAIL.GetEndDateTime() == "") {
+            if (PROCESS_DETAIL.isInitiated() && PROCESS_DETAIL.GetEndDateTime() == 0) {
                 PROCESS_DETAIL.SetEndDateTime(Now());
-                Save(PROCESS_DETAIL);
+                return PROCESS_DETAIL;
             }
         }
     }
 
     ProcessDetail pd(processName, processPath, windowTitle, startDateTime);
     PROCESS_DETAIL = pd;
+
+    return pd;
 }

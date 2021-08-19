@@ -1,19 +1,21 @@
 #include <string>
+#include <ctime>
 
 class ProcessDetail {
 private:
     std::string processName;
     std::string processPath;
     std::string windowTitle;
-    std::string startDateTime;
-    std::string endDateTime;
+    std::time_t startDateTime;
+    std::time_t endDateTime;
 
 public:
-    ProcessDetail(std::string name = "", std::string path = "", std::string title = "", std::string st = "") {
+    ProcessDetail(std::string name = "", std::string path = "", std::string title = "", std::time_t st = 0) {
         processName = name;
         processPath = path;
         windowTitle = title;
         startDateTime = st;
+        endDateTime = 0;
     }
 
     std::string GetWindowTitle() {
@@ -37,21 +39,25 @@ public:
         processName = name;
     }
 
-    std::string GetStartDateTime() {
+    std::time_t GetStartDateTime() {
         return startDateTime;
     }
-    void SetStartDateTime(std::string dateTime) {
+    void SetStartDateTime(std::time_t dateTime) {
         startDateTime = dateTime;
     }
 
-    std::string GetEndDateTime() {
+    std::time_t GetEndDateTime() {
         return endDateTime;
     }
-    void SetEndDateTime(std::string dateTime) {
+    void SetEndDateTime(std::time_t dateTime) {
         endDateTime = dateTime;
     }
 
     boolean Valid() {
-        return windowTitle != "" && processPath != "" && processName != "" && startDateTime !="";
+        return windowTitle != "" && processPath != "" && processName != "" && startDateTime != 0 && endDateTime != 0;
+    }
+
+    boolean isInitiated() {
+        return windowTitle != "" && processPath != "" && processName != "" && startDateTime != 0;
     }
 };

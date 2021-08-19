@@ -4,11 +4,11 @@
 
 using namespace std;
 
-MYSQL* connection;
+MYSQL* conn;
 
-void Save(ProcessDetail pd) {
-	connection = mysql_init(0);
-	if (connection) {
+void Connection() {
+	conn = mysql_init(0);
+	if (conn) {
 		std::cout << "connection established";
 	}
 	else {
@@ -16,22 +16,36 @@ void Save(ProcessDetail pd) {
 		exit(0);
 	}
 
-	connection = mysql_real_connect(connection, "your_server", "user_name", "password", "screentimedb", 3306, NULL, 0);
+	conn = mysql_real_connect(conn, "localhost", "root", "password", "screentime", 3306, NULL, 0);
+}
 
-	if (connection) {
+void DestroyConnection() {
+	if (conn) {
+		mysql_close(conn);
+	}
+}
+
+void Save(ProcessDetail pd) {
+	Connection();
+
+	if (conn) {
 		stringstream ss;
-		ss << "INSERT INTO screentime(window_title, process_name, process_path, start_date_time, end_date_time)"
-			<< "VALUES ('"+ pd.GetWindowTitle() + "', '"+ pd.GetProcessName() +"', '" + pd.GetProcessPath() + "', '" + pd.GetStartDateTime() + "', '" + pd.GetEndDateTime() + "')";
+		string stString = FormattedTimeString(pd.GetStartDateTime());
+		string etString = FormattedTimeString(pd.GetEndDateTime());
+		string timeDiff = to_string(TimeDiffInSeconds(pd.GetStartDateTime(), pd.GetEndDateTime()));
 
-		if (mysql_query(connection, ss.str().c_str())){
-			std::cout << "query failed";
-		} else
+		ss << "INSERT INTO screentime(window_title, process_name, process_path, start_date_time, end_date_time, time_diff)"
+			<< "VALUES ('"+ pd.GetWindowTitle() + "', '"+ pd.GetProcessName() +"', '" + pd.GetProcessPath() + "', '" + stString + "', '" + etString + "', '" + timeDiff + "')";
+
+		if (mysql_query(conn, ss.str().c_str())){
 			std::cout << "query succeed";
-
-		mysql_close(connection);	
+		} else
+			std::cout << "query failed";
 	}
 	else {
 		std::cout << "connection failed";
 		exit(0);
 	}
+
+	DestroyConnection();
 }
