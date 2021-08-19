@@ -28,6 +28,7 @@ If you want to setup and run the application in your host os.
         window_title VARCHAR(255) NOT NULL,
         start_date_time VARCHAR(255) NOT NULL,
         end_date_time VARCHAR(255) NULL DEFAULT NULL,
+        time_diff VARCHAR(255) NOT NULL DEFAULT '0',
         PRIMARY KEY (id)
     ) 
     ENGINE = InnoDB;
