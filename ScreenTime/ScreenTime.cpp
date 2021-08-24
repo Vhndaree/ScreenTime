@@ -20,7 +20,8 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-HWINEVENTHOOK hHook;
+HWINEVENTHOOK windowActiveHook;
+HWINEVENTHOOK windowDestructionHook;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
@@ -32,8 +33,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
-    hHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND,
-        NULL, ScreenTimeEventHandler, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNTHREAD);
+    windowActiveHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND,
+        NULL, ScreenTimeWinActiveEventHandler, 0, 0, WINEVENT_OUTOFCONTEXT | WINEVENT_SKIPOWNTHREAD);
+
+    windowDestructionHook = SetWinEventHook(EVENT_OBJECT_DESTROY, EVENT_OBJECT_DESTROY,
+        NULL, ScreenTimeWinDestroyEventHandler, 0, 0, WINEVENT_OUTOFCONTEXT);
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -143,7 +147,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
-                UnhookWinEvent(hHook);
+                UnhookWinEvent(windowActiveHook);
+                UnhookWinEvent(windowDestructionHook);
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
