@@ -21,5 +21,5 @@ std::string FormattedTimeString(std::time_t t) {
 
 int TimeDiffInSeconds(std::time_t t1, std::time_t t2) {
     double diff = difftime(t2, t1);
-    return round(diff)
+    return round(diff);
 }
