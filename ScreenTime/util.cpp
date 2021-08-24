@@ -21,9 +21,5 @@ std::string FormattedTimeString(std::time_t t) {
 
 int TimeDiffInSeconds(std::time_t t1, std::time_t t2) {
     double diff = difftime(t2, t1);
-    if (diff / 10 < 0.5) {
-        return floor(diff);
-    }
-
-    return ceil(diff);
+    return round(diff)
 }
