@@ -8,6 +8,7 @@ private:
     std::string windowTitle;
     std::time_t startDateTime;
     std::time_t endDateTime;
+    int timeDiff;
 
 public:
     ProcessDetail(std::string name = "", std::string path = "", std::string title = "", std::time_t st = 0) {
@@ -51,6 +52,13 @@ public:
     }
     void SetEndDateTime(std::time_t dateTime) {
         endDateTime = dateTime;
+    }
+
+    int GetTimeDiff() {
+        return timeDiff;
+    }
+    void SetTimeDiff(int diff) {
+        timeDiff = diff;
     }
 
     boolean Valid() {
