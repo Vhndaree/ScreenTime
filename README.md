@@ -1,5 +1,5 @@
 # ScreenTime [only supports on windows 10 or above]
-Desktop application for monitoring screen activity.
+-- Desktop application for monitoring screen activity.
 
 
 ## Table of Contents
