@@ -1,4 +1,4 @@
-# ScreenTime
+# ScreenTime [only supports on windows 10 or above]
 Desktop application for monitoring screen activity.
 
 
