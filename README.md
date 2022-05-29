@@ -1,5 +1,5 @@
 # ScreenTime [only supports on windows 10 or above]
--- Desktop application for monitoring screen activity.
+This is a simple desktop application for monitoring screen activity. This version is built only for windows and won't work with any other os.
 
 
 ## Table of Contents
@@ -34,14 +34,13 @@ If you want to setup and run the application in your host os.
     ENGINE = InnoDB;
 ```
 3. Build executable and run `.exe`
-4. ✨ Now the magic will begin ✨
 
 ### Project Status
-[x] Monitors screen time - when and app is opened & closed and gains and loses focus.
-[x] Supported on Windows 10 and above.
-[ ] Github action for CI/CD.
-[ ] Generate screen time report for users.
-[ ] ISSUE and a PR template.
+* [x] Monitors screen time - when and app is opened & closed and gains and loses focus.
+* [x] Supported on Windows 10 and above.
+* [ ] Github action for CI/CD.
+* [ ] Generate screen time report for users.
+* [ ] ISSUE and a PR template.
 
 ### Your First PR
 Contribution is always welcome, either PR or an ISSUE.
